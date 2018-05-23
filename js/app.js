@@ -17,13 +17,15 @@
         'data-tooltip': movie.title
       });
 
-      $title.tooltip({ delay: 50 }).text(movie.title);
+      $title.tooltip({
+        delay: 50
+      }).text(movie.title);
 
       const $poster = $('<img>').addClass('poster');
 
       $poster.attr({
-        src: movie.poster,
-        alt: `${movie.poster} Poster`
+        src: movie.Poster,
+        alt: `${movie.Poster} poster`
       });
 
       $content.append($title, $poster);
@@ -41,9 +43,9 @@
 
       const $modal = $('<div>').addClass('modal').attr('id', movie.id);
       const $modalContent = $('<div>').addClass('modal-content');
-      const $modalHeader = $('<h4>').text(movie.title);
-      const $movieYear = $('<h6>').text(`Released in ${movie.year}`);
-      const $modalText = $('<p>').text(movie.plot);
+      const $modalHeader = $('<h4>').text(movie.Title);
+      const $movieYear = $('<h6>').text(`Released in ${movie.Year}`);
+      const $modalText = $('<p>').text(movie.Plot);
 
       $modalContent.append($modalHeader, $movieYear, $modalText);
       $modal.append($modalContent);
@@ -56,5 +58,26 @@
     }
   };
 
-  // ADD YOUR CODE HERE
+  let searchBar = document.getElementById('search');
+  let searchButton = document.getElementById('searchButton');
+
+  searchButton.addEventListener('click', function(event) {
+    if (searchBar.value !== "") {
+      event.preventDefault();
+      let searchText = searchBar.value;
+      let searchURL = "https://omdb-api.now.sh/?s=" + searchText;
+      // console.log(searchURL);
+      fetch(searchURL)
+        .then((response) => response.json())
+        .then(function(data) {
+          console.log(data)
+          let movies = data.search;
+          renderMovies();
+        })
+
+    } else {
+      event.preventDefault();
+      console.log("Please select something to search");
+    }
+  })
 })();
