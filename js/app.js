@@ -4,6 +4,7 @@
   const movies = [];
 
   const renderMovies = function() {
+    console.log('This is our movies:', movies)
     $('#listings').empty();
 
     for (const movie of movies) {
@@ -41,7 +42,7 @@
       $action.append($plot);
       $card.append($action);
 
-      const $modal = $('<div>').addClass('modal').attr('id', movie.id);
+      const $modal = $('<div>').addClass('modal').attr('id', movie.imdbID);
       const $modalContent = $('<div>').addClass('modal-content');
       const $modalHeader = $('<h4>').text(movie.Title);
       const $movieYear = $('<h6>').text(`Released in ${movie.Year}`);
@@ -70,8 +71,15 @@
       fetch(searchURL)
         .then((response) => response.json())
         .then(function(data) {
-          console.log(data)
-          let movies = data.search;
+          console.log(data.Search);
+
+    // for (let i = 0; i < data.Search.length; i++) {
+    //   let movie = data.Search[i];
+    //   movies.push(movie);
+    // }
+          data.Search.forEach(function (movie) {
+            movies.push(movie);
+          });
           renderMovies();
         })
 
